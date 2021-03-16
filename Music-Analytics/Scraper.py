@@ -3,16 +3,21 @@ import spotipy
 import pprint
 from bs4 import BeautifulSoup
 
-URL = 'https://www.billboard.com/charts/year-end/2020/hot-100-songs'
-page = requests.get(URL)
+for i in range(2006, 2021):
 
-soup = BeautifulSoup(page.content, 'html.parser')
+    URL = f'https://www.billboard.com/charts/year-end/{i}/hot-100-songs'
+    page = requests.get(URL)
 
-results = soup.find_all('div', class_ = "ye-chart-item__title")
-artists = soup.find_all('div', class_ = "ye-chart-item__artist")
+    soup = BeautifulSoup(page.content, 'html.parser')
 
-for result in results:
-    print(result.text)
+    results = soup.find_all('div', class_ = "ye-chart-item__title")
+    artists = soup.find_all('div', class_ = "ye-chart-item__artist")
 
-for artist in artists:
-    print(artist.text)
+    for result in results:
+        print(result.text.strip())
+
+    print()
+
+    for artist in artists:
+        print(artist.text.strip())
+
