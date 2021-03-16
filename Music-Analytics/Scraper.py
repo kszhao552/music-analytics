@@ -1,5 +1,6 @@
 import requests
 import spotipy
+from spotipy.oauth2 import SpotifyClientCredentials
 import pprint
 from bs4 import BeautifulSoup
 
@@ -10,14 +11,17 @@ for i in range(2006, 2021):
 
     soup = BeautifulSoup(page.content, 'html.parser')
 
-    results = soup.find_all('div', class_ = "ye-chart-item__title")
-    artists = soup.find_all('div', class_ = "ye-chart-item__artist")
+    results = soup.find_all('article', class_ = "ye-chart-item")
+   
 
     for result in results:
-        print(result.text.strip())
+        rank = result.find('div', class_ = "ye-chart-item__rank")
+        title = result.find('div', class_ = "ye-chart-item__title")
+        artist = result.find('div', class_ = "ye-chart-item__artist")
 
-    print()
+        print(f'{rank.text.strip()} {title.text.strip()} - {artist.text.strip()}')
 
-    for artist in artists:
-        print(artist.text.strip())
+
+
+
 
