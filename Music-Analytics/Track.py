@@ -9,14 +9,20 @@ class Track:
         self.id = 0
 
 
-        def addGenre(genre):
+    def addGenre(genre):
             self.genres.append(genre)
 
-        def updateLength(time): 
+    def updateLength(time): 
             self.length = time
 
-        def updateID(id):
+    def updateID(id):
             self.id = id
 
-        def createSpotifyURI(self):
+    def createSpotifyURI(self):
             return f"spotify:track:{track.id}"
+
+    def __str__(self):
+            return f"{self.year} rank {self.rank}: {self.name} - {self.artist}: length: {self.length}"
+
+    def __repr__(self):
+            return f"{self.year} rank {self.rank}: {self.name} - {self.artist}: length: {self.length}"
