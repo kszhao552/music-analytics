@@ -1,8 +1,9 @@
 class Track:
-    def __init__ (self, rank, name, artist):
+    def __init__ (self, rank, name, artist, year):
         self.name = name
         self.rank = rank
         self.artist = artist
+        self.year = year
         self.genres = []
         self.length = 0
         self.id = 0
