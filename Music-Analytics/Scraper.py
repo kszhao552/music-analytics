@@ -2,6 +2,7 @@ import requests
 import spotipy
 from spotipy.oauth2 import SpotifyClientCredentials
 import pprint
+import Track
 from bs4 import BeautifulSoup
 
 def getLists():
@@ -16,19 +17,14 @@ def getLists():
 
         results = soup.find_all('article', class_ = "ye-chart-item")
    
-        yearList = []
         for result in results:
-            rank = result.find('div', class_ = "ye-chart-item__rank")
-            title = result.find('div', class_ = "ye-chart-item__title")
-            artist = result.find('div', class_ = "ye-chart-item__artist")
+            
         
-            yearList.append((int(rank.text.split('\n')[1]), title.text.split('\n')[1], artist.text.split('\n')[int(len(artist.text.split('\n'))/2)]))
+            yearEndLists.append(Track(int(rank.text.split('\n')[1]), title.text.split('\n')[1], artist.text.split('\n')[int(len(artist.text.split('\n'))/2)], i))
 
-        yearEndLists.append(yearList)
         return yearEndLists
 
 
-pprint.pprint(getLists())
 
 
 
