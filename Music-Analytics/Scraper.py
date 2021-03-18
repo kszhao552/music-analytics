@@ -24,7 +24,7 @@ def getLists():
 
 
         
-            yearEndLists.append(Track(int(rank.text.split('\n')[1]), title.text.split('\n')[1], artist.text.split('\n')[int(len(artist.text.split('\n'))/2)], i))
+            yearEndLists.append(Track(int(rank.text.strip()), title.text.strip(), artist.text.strip(), i))
 
     return yearEndLists
 
