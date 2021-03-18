@@ -1,8 +1,10 @@
+import re
+
 class Track:
     def __init__ (self, rank, name, artist, year):
         self.name = name
         self.rank = rank
-        self.artist = artist
+        self.artist = re.split(', | & | Featuring | featuring | With | with', artist)
         self.year = year
         self.genres = []
         self.length = 0
