@@ -30,9 +30,11 @@ def getLists():
             try:
                 track.updateID(search['tracks']['items'][0]['id'])
                 track.updateLength(search['tracks']['items'][0]['duration_ms']/1000)
+                track.updateAudioFeatures(spot.getAudioFeatures(track.id))
             except:
                 pass
 
+            pprint(track)
             yearEndLists.append(track)
 
     return yearEndLists
