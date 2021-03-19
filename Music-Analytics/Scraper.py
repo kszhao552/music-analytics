@@ -4,9 +4,11 @@ from spotipy.oauth2 import SpotifyClientCredentials
 from pprint import pprint
 from Track import Track
 from bs4 import BeautifulSoup
+from Spotify import Spotify
 
 def getLists():
     yearEndLists = []
+    spot = Spotify()
 
     for i in range(2006, 2021):
 
@@ -22,14 +24,21 @@ def getLists():
             title = result.find('div', class_ = "ye-chart-item__title")
             artist = result.find('div', class_ = "ye-chart-item__artist")
 
+            track = Track(int(rank.text.strip()), title.text.strip(), artist.text.strip(), i)
+            search = spot.getTrack(track.name)
+            
+            try:
+                track.updateID(search['tracks']['items'][0]['id'])
+                track.updateLength(search['tracks']['items'][0]['duration_ms']/1000)
+            except:
+                pass
 
-        
-            yearEndLists.append(Track(int(rank.text.strip()), title.text.strip(), artist.text.strip(), i))
+            yearEndLists.append(track)
 
     return yearEndLists
 
-pprint(getLists())
 
+pprint(getLists())
 
 
 
