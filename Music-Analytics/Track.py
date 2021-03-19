@@ -1,4 +1,6 @@
 import re
+import spotipy
+import spotipy.oauth2 as oauth2
 
 class Track:
     def __init__ (self, rank, name, artist, year):
@@ -7,24 +9,23 @@ class Track:
         self.artist = re.split(', | & | Featuring | featuring | With | with', artist)
         self.year = year
         self.genres = []
+        self.id = ''
         self.length = 0
-        self.id = 0
 
-
-    def addGenre(genre):
+    def addGenre(self, genre):
             self.genres.append(genre)
 
-    def updateLength(time): 
+    def updateLength(self, time): 
             self.length = time
 
-    def updateID(id):
+    def updateID(self, id):
             self.id = id
 
     def createSpotifyURI(self):
             return f"spotify:track:{track.id}"
 
     def __str__(self):
-            return f"{self.year} rank {self.rank}: {self.name} - {self.artist}: length: {self.length}"
+            return f"{self.year} rank {self.rank}: {self.name} - {self.artist}: length: {self.length}, id: {self.id}"
 
     def __repr__(self):
-            return f"{self.year} rank {self.rank}: {self.name} - {self.artist}: length: {self.length}"
+            return f"{self.year} rank {self.rank}: {self.name} - {self.artist}: length: {self.length}, id: {self.id}"
