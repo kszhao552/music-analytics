@@ -41,7 +41,6 @@ def getLists():
             
             track = createTrack(spot, result, i)
 
-            pprint(track)
             yearEndLists.append(track)
 
     return yearEndLists
