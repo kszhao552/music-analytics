@@ -18,7 +18,7 @@ def createTrack(spot, result, year):
         track.updateID(search['tracks']['items'][0]['id'])
         track.updateLength(search['tracks']['items'][0]['duration_ms']/1000)
         track.updateAudioFeatures(spot.getAudioFeatures(track.id))
-    except:
+    except Exception:
         pass
 
     return track
@@ -47,7 +47,8 @@ def getLists():
     return yearEndLists
 
 
-pprint(getLists())
+if __name__ == "__main__":
+    pprint(getLists())
 
 
 
