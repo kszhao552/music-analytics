@@ -40,6 +40,9 @@ def createDatabase(db, title):
         print("Database created successfully")
     except Error as e:
         raise(e)
+
+
+def createTables(db):
     
     CreateTracksQuery = """
     create TABLE IF NOT EXISTS Tracks (
@@ -81,6 +84,7 @@ def createDatabase(db, title):
         print("Tables created successfully")
     except Error as e:
         raise(e)
+
 
 def insertTable(track, db):
     if (track.id == ''):
