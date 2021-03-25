@@ -25,17 +25,24 @@ def establishConnection():
             user=input("Enter username: "),
             password=getpass("Enter password: "),
         )
-        print(db)
+        cursor = db.cursor()
+        
+        return db
     except Error as e:
-        print(e)
+        raise(e)
+
 
 def createDatabase(db, title):
     cursor = db.cursor()
 
-    cursor.execute(f"create database IF NOT EXISTS {title}")
+    try:
+        cursor.execute(f"create database IF NOT EXISTS {title}")
+        print("Database created successfully")
+    except Error as e:
+        raise(e)
     
-    str = """
-    create TABLE Tracks (
+    CreateTracksQuery = """
+    create TABLE IF NOT EXISTS Tracks (
         id INT AUTO_INCREMENT PRIMARY KEY,
         title VARCHAR(70), 
         year YEAR(4), 
@@ -50,23 +57,39 @@ def createDatabase(db, title):
     )
     """
 
-    cursor.execute(str)
 
-    str = """
-    create TABLE Artists (
+    CreateArtistsQuery = """
+    create TABLE IF NOT EXISTS Artists (
         id INT AUTO_INCREMENT PRIMARY KEY,
         name VARCHAR(70)
     )
     """
-    cursor.execute(str)
 
-    str = """
-    create TABLE Songs(
+    CreateSongsQuery = """
+    create TABLE IF NOT EXISTS Songs(
     FOREIGN KEY(track_id) REFERENCES track(id),
     FOREIGN KEY(artist_id) REFERENCES artist(id),
     PRIMARY KEY(track_id, artist_id)
     )
     """
-    cursor.execute(str)
 
-establishConnection()
+    try:
+        cursor.execute(CreateTracksQuery)
+        cursor.execute(CreateArtistsQuery)
+        cursor.execute(CreateSongsQuery)
+        db.commit()
+        print("Tables created successfully")
+    except Error as e:
+        raise(e)
+
+def insertTable(track, db):
+    if (track.id == ''):
+        return 
+    else:
+        return
+
+
+try:
+    print(establishConnection())
+except Error as e:
+    print(f'Error: {e}')
