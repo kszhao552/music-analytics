@@ -6,7 +6,7 @@ class Track:
     def __init__ (self, rank, name, artist, year):
         self.name = name
         self.rank = rank
-        self.artist = re.split(', | & | Featuring | featuring | With | with', artist)
+        self.artist = re.split(', & | & |, | Duet With | Featuring | \+ | Feat. | feat. | With | with | X | x | Or ', artist.replace("(", "").replace(")", "").replace("Of The YoungBloodZ", ""))
         self.year = year
         self.genres = []
         self.id = ''
@@ -21,7 +21,6 @@ class Track:
         self.liveness =0
         self.valence = 0
         self.tempo = 0
-
 
     def addGenre(self, genre):
             self.genres.append(genre)
