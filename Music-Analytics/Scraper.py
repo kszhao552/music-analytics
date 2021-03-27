@@ -1,6 +1,4 @@
 import requests
-import spotipy
-from spotipy.oauth2 import SpotifyClientCredentials
 from pprint import pprint
 from Track import Track
 from bs4 import BeautifulSoup
@@ -12,14 +10,20 @@ def createTrack(spot, result, year):
     artist = result.find('div', class_ = "ye-chart-item__artist")
 
     track = Track(int(rank.text.strip()), title.text.strip(), artist.text.strip(), year)
-    search = spot.getTrack(track.name)
+    search = spot.getTrack(track.name, track.artist)
             
     try:
         track.updateID(search['tracks']['items'][0]['id'])
         track.updateLength(search['tracks']['items'][0]['duration_ms']/1000)
         track.updateAudioFeatures(spot.getAudioFeatures(track.id))
     except Exception:
-        pass
+        search = spot.getTrackTitle(track.name)
+        try:
+            track.updateID(search['tracks']['items'][0]['id'])
+            track.updateLength(search['tracks']['items'][0]['duration_ms']/1000)
+            track.updateAudioFeatures(spot.getAudioFeatures(track.id))
+        except Exception:
+            pass
 
     return track
 
@@ -40,9 +44,9 @@ def getLists():
         for result in results:
             
             track = createTrack(spot, result, i)
-
+            pprint(track)
             yearEndLists.append(track)
-
+            
     return yearEndLists
 
 
