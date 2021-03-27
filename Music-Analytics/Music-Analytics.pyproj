@@ -25,13 +25,13 @@
     <Compile Include="module1.py">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Database.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="Spotify.py">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Track.py">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="CreatePlaylist.py">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Scraper.py">
