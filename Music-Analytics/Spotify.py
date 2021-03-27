@@ -16,11 +16,12 @@ class Spotify(object):
 
         token = credentials.get_access_token()
         self.sp = spotipy.Spotify(auth = token)
-
         
-    def getTrack(self, track):
-        return self.sp.search(q=f'track: {track}', type = 'track', limit =1)
+    def getTrack(self, track, artist):
+        return self.sp.search(q=f'artist: {artist[0]} track: {track}', type = 'track', limit =1)
 
+    def getTrackTitle(self, track):
+        return self.sp.search(q=f'track: {track}', type = 'track', limit =1)
 
     def getAudioFeatures(self, id):
         return self.sp.audio_features(id)
