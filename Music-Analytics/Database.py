@@ -63,7 +63,8 @@ def createTables(db):
     create TABLE IF NOT EXISTS Tracks (
         id INT AUTO_INCREMENT PRIMARY KEY, 
         title VARCHAR(70), 
-        year YEAR(4), 
+        chart_year YEAR(4),
+        release_year YEAR(4),
         length DECIMAL(7, 3), 
         dancebility DECIMAL(5, 3), 
         energy DECIMAL(5, 3), 
@@ -86,16 +87,22 @@ def createTables(db):
 
     CreateSongsQuery = """
     create TABLE IF NOT EXISTS Songs(
-    FOREIGN KEY(track_id) REFERENCES track(id), 
-    FOREIGN KEY(artist_id) REFERENCES artist(id), 
-    PRIMARY KEY(track_id, artist_id)
+    track_id INT NOT NULL,
+    artist_id INT NOT NULL,
+    PRIMARY KEY(track_id, artist_id),
+    FOREIGN KEY(track_id) REFERENCES Tracks(id), 
+    FOREIGN KEY(artist_id) REFERENCES Artists(id)
     )
     """
 
     try:
+        cursor = db.cursor()
         cursor.execute(CreateTracksQuery)
+        print("Tracks Table Created Successfully")
         cursor.execute(CreateArtistsQuery)
+        print("Artists Table Created Successfully")
         cursor.execute(CreateSongsQuery)
+        print("Songs Table Created Successfully")
         db.commit()
         print("Tables created successfully")
     except Error as e:
@@ -113,5 +120,10 @@ def insertTable(track, db):
 if __name__ == "__main__":
     try:
         db = restablishConnection("test")
+        cursor = db.cursor()
+        cursor.execute("SHOW TABLES")
+        results = cursor.fetchall()
+        for result in results:
+            print(result)
     except Error as e:
         print(f'Error: {e}')
