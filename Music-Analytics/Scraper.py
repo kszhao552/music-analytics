@@ -4,6 +4,11 @@ from Track import Track
 from bs4 import BeautifulSoup
 from Spotify import Spotify
 
+def updateTrack(spot, track, result):
+    track.updateID(result['tracks']['items'][0]['id'])
+    track.updateLength(result['tracks']['items'][0]['duration_ms']/1000)
+    track.updateAudioFeatures(spot.getAudioFeatures(track.id))
+
 def createTrack(spot, result, year):
     rank = result.find('div', class_ = "ye-chart-item__rank")
     title = result.find('div', class_ = "ye-chart-item__title")
@@ -11,17 +16,13 @@ def createTrack(spot, result, year):
 
     track = Track(int(rank.text.strip()), title.text.strip(), artist.text.strip(), year)
     search = spot.getTrack(track.name, track.artist)
-            
+    
     try:
-        track.updateID(search['tracks']['items'][0]['id'])
-        track.updateLength(search['tracks']['items'][0]['duration_ms']/1000)
-        track.updateAudioFeatures(spot.getAudioFeatures(track.id))
+       updateTrack(spot, track, search)
     except Exception:
         search = spot.getTrackTitle(track.name)
         try:
-            track.updateID(search['tracks']['items'][0]['id'])
-            track.updateLength(search['tracks']['items'][0]['duration_ms']/1000)
-            track.updateAudioFeatures(spot.getAudioFeatures(track.id))
+            updateTrack(spot, track, search)
         except Exception:
             pass
 
@@ -52,7 +53,3 @@ def getLists():
 
 if __name__ == "__main__":
     pprint(getLists())
-
-
-
-
