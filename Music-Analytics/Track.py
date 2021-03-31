@@ -8,6 +8,7 @@ class Track:
         self.rank = rank
         self.artist = re.split(', & | & |, | Duet With | Featuring | \+ | Feat. | feat. | With | with | X | x | Or ', artist.replace("(", "").replace(")", "").replace("Of The YoungBloodZ", ""))
         self.year = year
+        self.releaseYear = 0
         self.genres = []
         self.id = ''
         self.length = 0
@@ -30,6 +31,9 @@ class Track:
 
     def updateID(self, id):
             self.id = id
+
+    def updateReleaseYear(self, year):
+        self.releaseYear = year
 
     def createSpotifyURI(self):
             return f"spotify:track:{track.id}"
