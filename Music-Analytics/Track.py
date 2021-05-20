@@ -1,6 +1,8 @@
 import re
 import spotipy
 import spotipy.oauth2 as oauth2
+import pandas as pd
+from collections import defaultdict
 
 class Track:
     def __init__ (self, rank, name, artist, year):
@@ -55,3 +57,16 @@ class Track:
 
     def __repr__(self):
             return f"{self.year} rank {self.rank}: {self.name} - {self.artist}: length: {self.length}, id: {self.id}"
+
+    def toDf(self):
+        dic = defaultdict(list)
+        length = len(self.artist)
+        for attr, value in self.__dict__.items():
+            
+            if attr == 'genres' or attr == 'releaseYear':
+                continue
+            else:
+                dic[attr].append(value)
+
+        return pd.DataFrame(dic)
+                    

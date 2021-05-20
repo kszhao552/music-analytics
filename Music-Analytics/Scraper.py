@@ -3,6 +3,8 @@ from pprint import pprint
 from Track import Track
 from bs4 import BeautifulSoup
 from Spotify import Spotify
+from pprint import pprint
+import pandas as pd
 
 def updateTrack(spot, track, result):
     track.updateID(result['tracks']['items'][0]['id'])
@@ -29,11 +31,11 @@ def createTrack(spot, result, year):
     return track
 
 
-def getLists():
+def getLists(start, end):
     yearEndLists = []
     spot = Spotify()
 
-    for i in range(2006, 2021):
+    for i in range(start, end):
 
         URL = f'https://www.billboard.com/charts/year-end/{i}/hot-100-songs'
         page = requests.get(URL)
@@ -50,6 +52,13 @@ def getLists():
             
     return yearEndLists
 
+def dfToCsv(df, filename):
+    with open(filename, 'a', encoding='utf-8') as f:
+        df.to_csv(f, header=f.tell()==0, index=False, line_terminator='\n')
+    f.close()
 
 if __name__ == "__main__":
-    pprint(getLists())
+    ls = getLists(2013, 2021)
+    for item in ls:
+        if item.id != '':
+            dfToCsv(item.toDf(), 'output.csv')
