@@ -1,20 +1,5 @@
 from django.db import models
-"""
-    create TABLE IF NOT EXISTS Tracks (
-        id INT AUTO_INCREMENT PRIMARY KEY, 
-        title VARCHAR(70), 
-        chart_year YEAR(4),
-        length DECIMAL(7, 3), 
-        dancebility DECIMAL(5, 3), 
-        energy DECIMAL(5, 3), 
-        liveness DECIMAL(5, 3), 
-        loudness DECIMAL(6, 3), 
-        speechiness DECIMAL (5, 3), 
-        tempo DECIMAL (7, 3), 
-        music_key INT, 
-        valence DECIMAL(5, 3)
-    )
-    """
+
 # Create your models here.
 class Artist(models.Model):
     name = models.CharField(max_length=100)
