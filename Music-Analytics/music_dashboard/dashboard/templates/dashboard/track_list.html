@@ -1,0 +1,142 @@
+﻿{% extends "dashboard/data.html" %}
+{% block main%}
+<div style="padding:20px 20px 20px 20px"></div>
+<div class="graphContainer">
+    <div id="length" class="column">
+
+    </div>
+    <div id="danceability" class="column">
+
+    </div>
+    <div id="energy" class="column">
+
+    </div>
+    <div id="loudness" class="column">
+
+    </div>
+    <div id="speechiness" class="column"></div>
+</div>
+<script>
+    function binArray(arr) {
+
+        let max = arr.reduce(function (a, b) {
+            return Math.max(a, b);
+        });
+        let min = arr.reduce(function (a, b) {
+            return Math.min(a, b);
+        });
+
+        if ((max - min) < 5) {
+            arr = arr.map(function (x) { return Math.round(x * 1000)/10 }); 
+            max = Math.round(max * 1000) / 10;
+            min = Math.round(min * 1000) / 10;
+        }
+
+        let hist = d3.bin()
+            .domain([min, max])
+            .thresholds(16);
+
+        let bins = hist(arr);
+
+        console.log(min)
+        console.log(max)
+
+        return bins
+    }
+</script>
+
+<script>
+    length = binArray({{ length| safe}});
+    danceability = binArray({{ danceability| safe}});
+    energy = binArray({{ energy| safe}});
+    loudness = binArray({{ loudness| safe}});
+    speechiness = binArray({{ speechiness| safe}});
+    tempo = binArray({{ tempo| safe}});
+    valence = binArray({{ valence| safe}});
+    music_key = binArray({{ music_key| safe}});
+    acousticness = binArray({{ acousticness| safe}});
+    liveness = binArray({{ liveness| safe}});
+</script>
+<script>
+    function makeGraph(data, color, Nbin, id, maxVal, xAxis) {
+    min = d3.min(data);
+    max = d3.max(data);
+    domain = [min, max];
+        range = domain[1] - domain[0];
+        domain[0] -= (range / 20)
+        domain[1] += (range/20)
+
+    var margin = { top: 40, right: 30, bottom: 60, left: 50 },
+        width = 460 - margin.left - margin.right,
+        height = 400 - margin.top - margin.bottom;
+
+    var x = d3
+        .scaleLinear()
+        .domain(domain)
+        .range([0, width]);
+
+    var histogram = d3
+        .histogram()
+        .domain(x.domain()) // then the domain of the graphic
+        .thresholds(x.ticks(Nbin)); // then the numbers of bins
+
+    var bins = histogram(data);
+
+    var svg = d3
+        .select(id)
+        .append("svg")
+        .attr("width", width + margin.left + margin.right)
+        .attr("height", height + margin.top + margin.bottom)
+        .append("g")
+        .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+    svg
+        .append("g")
+        .attr("transform", "translate(0," + height + ")")
+        .call(d3.axisBottom(x));
+
+    var y = d3
+        .scaleLinear()
+        .range([height, 0])
+        .domain([
+            0, maxVal
+        ]);
+
+    svg.append("g").call(d3.axisLeft(y));
+
+    svg.selectAll("rect")
+        .data(bins)
+        .enter()
+        .append("rect")
+        .attr("x", 1)
+        .attr("transform", function (d) {
+            return "translate(" + x(d.x0) + "," + y(d.length) + ")";
+        })
+        .attr("width", function (d) {
+            return x(d.x1) - x(d.x0) - 1;
+        })
+        .attr("height", function (d) {
+            return height - y(d.length);
+        })
+            .style("fill", color);
+
+        svg.append("text")
+            .attr("class", "x label")
+            .attr("text-anchor", "end")
+            .attr("x", 2*width/3)
+            .attr("y", height+40)
+            .text(xAxis);
+    }
+
+    makeGraph({{ length| safe}}, "steelblue", 20, "#length",40, "Length (Seconds)");
+    makeGraph({{ danceability| safe }}, "purple", 20, "#danceability", 30, "Danceability");
+    makeGraph({{ energy| safe}}, "green", 20, "#energy", 30, "Energy");
+    makeGraph({{ loudness| safe }}, "red", 20, "#loudness", 45, "Loudness (LUFS)");
+    makeGraph({{ speechiness| safe}}, "orange", 20, "#speechiness", 35, "Speechiness");
+    makeGraph({{ tempo| safe }}, "yellowgreen", 20, "#length", 40, "Tempo (bpm)");
+    makeGraph({{ valence| safe}}, "pink", 20, "#danceability", 15, "Valence");
+    makeGraph({{ music_key| safe }}, "gray", 20, "#energy", 20, "Music Key");
+    makeGraph({{ acousticness| safe }}, "black", 20, "#loudness", 55, "Accousticness");
+    makeGraph({{ liveness| safe}}, "maroon", 20, "#speechiness", 40, "Liveness");
+</script>
+{% endblock %}

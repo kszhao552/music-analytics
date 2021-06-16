@@ -1,0 +1,28 @@
+﻿{% extends "dashboard/base.html" %}
+{% block content %}
+
+<div class ="container"style="margin-left:auto; margin-right:auto; margin-top:50px; width: 51%; overflow: scroll; height: 75vh;">
+<div>
+    <table class="track-table table" style="margin-left:auto; margin-right:auto;">
+        <thead class="thead-dark">
+            <tr>
+                <th scope="col" class="track-head track-cell name">Track Name</th>
+                <th scope="col" class="track-head track-cell year">Year</th>
+                <th scope="col" class="track-head track-cell rank">Rank</th>
+                <th scope="col" class="track-head track-cell spot-id">Spotify ID</th>
+            </tr>
+            </thead>
+        <tbody>
+        {% for song in track%}
+            <tr>
+                <td scope="row" class="track-cell track-body name">{{ song.track_name }}</td>
+                <td class="track-cell track-body year"><a class ="cell-link" href="{% url 'track-year' song.year %}"><div>{{ song.year }}</div></a></td>
+                <td class="track-cell track-body rank">{{ song.rank }}</td>
+                <td class="track-cell track-body spot-id"><a style="color:black"href="https://open.spotify.com/{{song.spotify.id}}" target="_blank">{{ song.spotify_id }}</a></td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</div>
+    </div>
+{% endblock %}
